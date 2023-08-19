@@ -198,27 +198,8 @@ let blusas = select('#blusas')
 blusas.innerHTML = ''
 camisasFlamengoJson.map((tshirt, index) => {
     console.log(index);
-    // let eachTshirt = document.querySelector('.models .each-tshirt').cloneNode(true)
-    // //console.log(eachTshirt)
-    // select('.tshirts-area').append(eachTshirt)
-
-    // //tshirts data - team page:
-    // readTshirtsData(eachTshirt, tshirt, index)
-
-    // //each tshirt window:
-    // eachTshirt.querySelector('.each-tshirt a').addEventListener('click', (event) => {
-    //     event.preventDefault()
-
-    //     let specificKey = getKey(event)
-
-    //     openWindow()
-    //     windowsInfo(tshirt)
-    //     readSizes(specificKey)
-    //     chooseSize(specificKey)
-    // })
-
-    // closeButtons()
-    let blusa = `<div class="each-tshirt col-md-4 col-sm-6">
+    
+    let blusa = `<div class="each-tshirt col-md-6 col-sm-6">
     <div
       class="card-tshirts row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div class="tshirt-item--img col-auto d-none d-lg-block">
@@ -243,19 +224,20 @@ camisasFlamengoJson.map((tshirt, index) => {
     </div>
   </div>`
     blusas.innerHTML += blusa
+    
+    blusas.querySelector('.each-tshirt a').addEventListener('click', (event) => {
+        event.preventDefault()
+    
+        let specificKey = getKey(event)
+    
+        openWindow()
+        windowsInfo(tshirt)
+        readSizes(specificKey)
+        chooseSize(specificKey)
+    })
+    closeButtons()
 })
 
-
-eachTshirt.querySelector('.each-tshirt a').addEventListener('click', (event) => {
-    event.preventDefault()
-
-    let specificKey = getKey(event)
-
-    openWindow()
-    windowsInfo(tshirt)
-    readSizes(specificKey)
-    chooseSize(specificKey)
-})
 
 changeQtd()
 addToCart()
