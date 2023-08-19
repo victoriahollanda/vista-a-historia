@@ -29,18 +29,6 @@ const closeButtons = () => {
     selectAll('.tshirtWindow--cancelButton, .tshirtWindow--cancelButtonMob').forEach((tshirt) => tshirt.addEventListener('click', closeWindow))
 }
 
-//tshirts data - team page:
-const readTshirtsData = (eachTshirt, tshirt, index) => {
-    eachTshirt.setAttribute('data-key', index)
-    eachTshirt.querySelector('.tshirt-item--img img').src = tshirt.img
-    eachTshirt.querySelector('.tshirt-item--link a').href = tshirt.detailsLink
-    eachTshirt.querySelector('.tshirt-item--name').innerHTML = tshirt.model
-    eachTshirt.querySelector('.tshirt-item--cup').innerHTML = tshirt.cup
-    eachTshirt.querySelector('.tshirt-item--description').innerHTML = tshirt.description
-    eachTshirt.querySelector('.tshirt-item--mkt').innerHTML = `R$ ${tshirt.mktPrice}`
-    eachTshirt.querySelector('.tshirt-item--price').innerHTML = `R$ ${tshirt.price}`
-}
-
 //windows info for tshirt
 const windowsInfo = (tshirt) => {
     select('.tshirtWindowImg img').src = tshirt.img
@@ -196,6 +184,7 @@ const updateCart = () => {
 
 let blusas = select('#blusas')
 blusas.innerHTML = ''
+
 camisasFlamengoJson.map((tshirt, index) => {
     console.log(index);
     
@@ -227,6 +216,7 @@ camisasFlamengoJson.map((tshirt, index) => {
     
     blusas.querySelector('.each-tshirt a').addEventListener('click', (event) => {
         event.preventDefault()
+        console.log('clicou na camisa');
     
         let specificKey = getKey(event)
     
