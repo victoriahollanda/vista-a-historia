@@ -163,7 +163,7 @@ button {
 }
 
 .tshirtInfo--size.selected {
-    background-color:#d32f2f;
+    background-color:rgba(0, 123, 49, 0.984);
     color:#FFF;
 }
 
@@ -216,7 +216,7 @@ button {
     margin-top:30px;
     padding:20px 30px;
     border-radius:20px;
-    background-color:#48d05f;
+    background-color:rgba(0, 123, 49, 0.984);
     color:#FFF;
     display:inline-block;
     cursor:pointer;
@@ -224,7 +224,7 @@ button {
 }
 
 .tshirtInfo--addButton:hover {
-    background-color:#32a345;
+    background-color:rgba(1, 61, 25, 0.984);
 }
 
 .tshirtWindow--cancelButton {
