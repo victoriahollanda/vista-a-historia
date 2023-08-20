@@ -29,11 +29,6 @@ const closeButtons = () => {
     selectAll('.tshirtWindow--cancelButton, .tshirtWindow--cancelButtonMob').forEach((tshirt) => tshirt.addEventListener('click', closeWindow))
 }
 
-//função para setar identificador às camisas
-// const setId = (eachTshirt, index) => {
-//     eachTshirt.setAttribute('data-key', index)
-// }
-
 //windows info for tshirt
 const windowsInfo = (tshirt) => {
     select('.tshirtWindowImg img').src = tshirt.img
@@ -195,7 +190,7 @@ blusas.innerHTML = ''
 camisasFlamengoJson.map((tshirt, index) => {
     console.log(index);
     
-    let eachTshirt = `<div class="each-tshirt col-md-6 col-sm-6">
+    let eachTshirt = `<div class="each-tshirt col-md-6 col-sm-6" data-key="${index}">
     <div
       class="card-tshirts row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div class="tshirt-item--img col-auto d-none d-lg-block">
