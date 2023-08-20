@@ -29,6 +29,11 @@ const closeButtons = () => {
     selectAll('.tshirtWindow--cancelButton, .tshirtWindow--cancelButtonMob').forEach((tshirt) => tshirt.addEventListener('click', closeWindow))
 }
 
+//função para setar identificador às camisas
+// const setId = (eachTshirt, index) => {
+//     eachTshirt.setAttribute('data-key', index)
+// }
+
 //windows info for tshirt
 const windowsInfo = (tshirt) => {
     select('.tshirtWindowImg img').src = tshirt.img
@@ -36,6 +41,8 @@ const windowsInfo = (tshirt) => {
     select('.tshirtInfo--desc').innerHTML = tshirt.config
     select('.tshirtInfo--actualPrice').innerHTML = `R$ ${tshirt.price}`
 }
+
+
 
 //set/get keys for Tshirt:
 const getKey = (event) => {
@@ -188,7 +195,7 @@ blusas.innerHTML = ''
 camisasFlamengoJson.map((tshirt, index) => {
     console.log(index);
     
-    let blusa = `<div class="each-tshirt col-md-6 col-sm-6">
+    let eachTshirt = `<div class="each-tshirt col-md-6 col-sm-6">
     <div
       class="card-tshirts row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div class="tshirt-item--img col-auto d-none d-lg-block">
@@ -202,8 +209,8 @@ camisasFlamengoJson.map((tshirt, index) => {
         <h4 class="tshirt-item--name mb-0">${tshirt.model}</h4>
         <div class="tshirt-item--cup mb-1 text-body-secondary">${tshirt.cup}</div>
         <p class="tshirt-item--description card-text mb-auto">${tshirt.description}</p>
-        <strong class="tshirt-item--mkt text-decoration-line-through">${tshirt.mktPrice}</strong>
-        <strong class="tshirt-item--price d-inline-block mb-4 text-dark-emphasis">${tshirt.price}</strong>
+        <strong class="tshirt-item--mkt text-decoration-line-through">${'R$ ' + tshirt.mktPrice}</strong>
+        <strong class="tshirt-item--price d-inline-block mb-4 text-dark-emphasis">${'R$ ' + tshirt.price}</strong>
         <div class="tshirt-item--link">
           <a href="#" class=" icon-link gap-1 icon-link-hover stretched-link">
             <button type="button" class="btn btn-sm btn-dark"> Compre aqui</button>
@@ -212,19 +219,25 @@ camisasFlamengoJson.map((tshirt, index) => {
       </div>
     </div>
   </div>`
-    blusas.innerHTML += blusa
     
-    blusas.querySelector('.each-tshirt a').addEventListener('click', (event) => {
-        event.preventDefault()
-        console.log('clicou na camisa');
+    blusas.innerHTML += eachTshirt
     
-        let specificKey = getKey(event)
     
-        openWindow()
-        windowsInfo(tshirt)
-        readSizes(specificKey)
-        chooseSize(specificKey)
-    })
+    blusas.querySelectorAll('.each-tshirt a').forEach((button, index) => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Clicou na camisa');
+    
+            let specificKey = getKey(e);
+    
+            openWindow();
+            
+            windowsInfo(camisasFlamengoJson[index]);
+            readSizes(specificKey);
+            chooseSize(specificKey);
+        });
+    });
+    
     closeButtons()
 })
 
