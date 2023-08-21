@@ -108,9 +108,9 @@ const addToCart = () => {
             let tshirtInCart = {
                 id,
                 id: camisasFlamengoJson[windowKey].id,
-                size, // size: size
+                size,
                 qt: qtdTshirts,
-                price: parseFloat(price) // price: price
+                price: parseFloat(price)
             }
             cart.push(tshirtInCart)
             console.log(tshirtInCart)
@@ -125,14 +125,16 @@ const addToCart = () => {
 const openCart = () => {
     if (cart.length > 0) {
         setTimeout(function () {
-            window.location.href = "../carrinho.html"
+            window.location.href = "./carrinho.html"
         })
     }
 }
 
 const updateCart = () => {
+    select('.qtdCart').addEventListener.innerHTML = cart.length
+
     if (cart.length > 0) {
-        select('.car').innerHTML = ''
+        select('.cart').innerHTML = ''
 
         let subtotal = 0
         let total = 0
@@ -177,7 +179,7 @@ const updateCart = () => {
         select('.total').innerHTML = total
     } else {
         setTimeout(function () {
-            window.location.href = "../flamengo.html"
+            window.location.href = "./flamengo.html"
         })
 
     }
@@ -239,3 +241,4 @@ camisasFlamengoJson.map((tshirt, index) => {
 
 changeQtd()
 addToCart()
+updateCart()
