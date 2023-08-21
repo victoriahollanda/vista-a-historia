@@ -116,6 +116,8 @@ const addToCart = () => {
                 qt: qtdTshirts,
                 price: parseFloat(price)
             }
+            cart = JSON.parse(localStorage.getItem("cart"))
+            console.log(cart);
             cart.push(tshirtInCart)
             console.log(tshirtInCart)
             console.log('Sub total R$ ' + (tshirtInCart.qt * tshirtInCart.price))
@@ -204,7 +206,7 @@ const updateCart = (callback) => {
         });
     }
 
-    if(typeof callback === 'function') {
+    if (typeof callback === 'function') {
         callback()
     }
 };
@@ -271,5 +273,39 @@ camisasFlamengoJson.map((tshirt, index) => {
 
 // })
 
+
 changeQtd()
+
+const renderizarCarrinhoNaPaginaCarrinho = (cartItens) => {
+    const cartContainer = document.getElementById('cart-container');
+    cartContainer.innerHTML = '';
+
+    cartItens.forEach((cartItem) => {
+        const eachTshirt = camisasFlamengoJson.find(tshirt => tshirt.id === cartItem.id);
+
+        const cartItemContainer = document.createElement('div');
+        cartItemContainer.classList.add('cart-item');
+
+        // Crie os elementos HTML para exibir as informações da camisa no carrinho, semelhante ao exemplo anterior.
+
+        cartContainer.appendChild(cartItemContainer);
+    });
+}
+
+const exibirCarrinhoNaPaginaCarrinho = () => {
+    const cartFromStorage = JSON.parse(localStorage.getItem('cart'));
+    if (cartFromStorage && cartFromStorage.length > 0) {
+        renderizarCarrinhoNaPaginaCarrinho(cartFromStorage);
+
+        // Outras atualizações necessárias na página, como exibir subtotal e total.
+    } else {
+        // Carrinho vazio, exibir uma mensagem ou tratamento apropriado.
+    }
+};
+
+// changeQtd()
+
+
 addToCart()
+
+exibirCarrinhoNaPaginaCarrinho()
