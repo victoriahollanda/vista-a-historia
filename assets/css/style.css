@@ -239,3 +239,109 @@ button {
     line-height: 40px;
     margin-bottom:30px;
 }
+
+/* cart */
+.cart {
+    margin-bottom:20px;
+}
+
+.cart--item {
+    display:flex;
+    align-items:center;
+    margin:10px 0;
+}
+
+.cart--item img {
+    width:40px;
+    height:40px;
+    margin-right:20px;
+}
+
+.cart--item-nome {
+    flex:1;
+}
+
+.cart--item--qtarea {
+    display:inline-flex;
+    background-color:#EEE;
+    border-radius:10px;
+    height:30px;
+}
+
+.cart--item--qtarea button {
+    border:0;
+    background-color:transparent;
+    font-size:17px;
+    outline:0;
+    cursor:pointer;
+    padding:0px 10px;
+    color:#333;
+}
+
+.cart--item--qt {
+    line-height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px 5px;
+    color:#000;
+}
+
+.cart--totalitem {
+    padding:15px 0;
+    border-top:1px solid #d32f2f;
+    color:#315970;
+    display:flex;
+    justify-content: space-between;
+    font-size:15px;
+}
+
+.cart--totalitem span:first-child {
+    font-weight: bold;
+}
+
+.cart--totalitem.big {
+    font-size:20px;
+    color:#000;
+    font-weight: bold;
+}
+
+.cart--finalizar {
+    padding:20px 30px;
+    border-radius:20px;
+    background-color:rgba(0, 123, 49, 0.984);
+    color:#FFF;
+    cursor:pointer;
+    text-align:center;
+    margin-top:20px;
+    border:2px solid rgba(1, 94, 38, 0.984);
+    transition: all ease .2s;
+}
+
+.cart--finalizar:hover {
+    background-color:rgb(0, 123, 49);
+}
+
+  aside {
+    position: fixed;
+    top: 0;
+    left: 100vw;
+    right: 0; 
+    width: auto;
+    bottom: 0;
+    z-index: 1050;
+    background-color: rgb(155, 226, 167);
+  }
+
+  
+  aside.show {
+    width:30vw;
+}
+
+.cart--area {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.cart--area h1 {
+    display: relative;
+}

@@ -4,7 +4,7 @@ let windowKey = 0
 //variável contendo a quantidade de camisas selecionadas
 let qtdTshirts = 1
 
-//variável para o carrinho - colocar no localStorage
+//variável para o carrinho
 let cart = []
 
 const select = (element) => document.querySelector(element)
@@ -84,12 +84,6 @@ const changeQtd = () => {
 }
 
 // cart functions
-const updateCartAndOpenCart = () => {
-    updateCart(() => {
-        openCart();
-    });
-};
-
 const addToCart = () => {
     select('.tshirtInfo--addButton').addEventListener('click', () => {
         console.log('Adicionar no carrinho')
@@ -101,130 +95,129 @@ const addToCart = () => {
 
         let price = select('.tshirtInfo--actualPrice').innerHTML.replace('R$ ', '')
 
-        let id = camisasFlamengoJson[windowKey].id + 't' + size
-        let key = cart.findIndex((tshirt) => tshirt.id == id)
+        let identificator = camisasFlamengoJson[windowKey].id + 't' + size
+        let key = cart.findIndex( (tshirt) => tshirt.identificator == identificator)
         console.log(key)
 
-        if (key >= 0) {
+        if (key > -1) {
             cart[key].qt += qtdTshirts
         } else {
-            //add tshirt in cart
+            //adiciona tshirt no cart:
             let tshirtInCart = {
-                id,
+                identificator,
                 id: camisasFlamengoJson[windowKey].id,
                 size,
                 qt: qtdTshirts,
                 price: parseFloat(price)
             }
-            cart = JSON.parse(localStorage.getItem("cart"))
-            console.log(cart);
             cart.push(tshirtInCart)
             console.log(tshirtInCart)
-            console.log('Sub total R$ ' + (tshirtInCart.qt * tshirtInCart.price))
+            console.log('Subtotal R$ ' + (tshirtInCart.qt * tshirtInCart.price))
         }
 
-        //APAGAR ATÉ AQUI
-        //Converte array cart em string JSON e armazena no LocalStorage com a key cart
-        localStorage.setItem('cart', JSON.stringify(cart))
-
-        updateCartAndOpenCart()
+        closeWindow()
+        openCart()
+        updateCart()
     })
 }
 
 const openCart = () => {
     if (cart.length > 0) {
-        localStorage.setItem('cartIsOpen', 'true');
-        window.location.href = "./carrinho.html";
+        select('aside').classList.add('show')
+        select('aside').style.left = '0'
+    }
+
+    //mobile:
+    select('.menu-openner').addEventListener('click', () => {
+        if(cart.length > 0) {
+            select('aside').classList.add('show')
+            select('aside').style.left = '0'
+        }
+    })
+}
+
+const closeCart = () => {
+    select('.menu-closer').addEventListener('click', () => {
+        select('aside').style.left = '100vw'
+    })
+}
+
+const updateCart = () => {
+    console.log("o tamanho do carrinho é: " + cart.length);
+    if (cart.length > 0) {
+        select('aside').classList.add('show')
+        select('.cart').innerHTML = ''
+
+        let subtotal = 0
+        let total = 0
+
+        for (let i in cart) {
+            let eachTshirt = camisasFlamengoJson.find((tshirt) => tshirt.id == cart[i].id)
+            console.log(eachTshirt)
+
+            subtotal += cart[i].price * cart[i].qt
+            
+            //SUBSTITUIR POR MAP 
+            let cartItem = select('.cart--item').cloneNode(true)
+            select('.cart').append(cartItem)
+
+
+            let tshirtSize = cart[i].size
+            let tshirtName = `${eachTshirt.model} (${tshirtSize})`
+
+            cartItem.querySelector('img').src = eachTshirt.img
+            cartItem.querySelector('.cart--item-nome').innerHTML = tshirtName
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt
+
+            cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+                console.log('Clicou no botão mais')
+                cart[i].qt++
+                updateCart()
+            })
+
+            cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+                console.log('Clicou no botão menos')
+                if (cart[i].qt > 1) {
+                    cart[i].qt--
+                } else {
+                    cart.splice(i, 1)
+                }
+                
+                (cart.length < 1) ? seleciona('header').style.display = 'flex' : ''
+
+                updateCart()
+            })
+
+            select('.cart').append(cartItem)
+
+        }
+        
+        total=subtotal
+
+        select('.subtotal').innerHTML = subtotal
+        select('.total').innerHTML = total
+    } else {
+        select('aside').classList.remove('show')
+		select('aside').style.left = '100vw'
+
     }
 }
 
-const updateCart = (callback) => {
-    const cartIsOpen = localStorage.getItem('cartIsOpen');
-    if (cartIsOpen === 'true') {
-        // Remove o indicador de carrinho aberto
-        localStorage.removeItem('cartIsOpen');
-
-        // Recupera o carrinho do Local Storage
-        const cartFromStorage = JSON.parse(localStorage.getItem('cart'));
-        if (cartFromStorage && cartFromStorage.length > 0) {
-            // Limpa o conteúdo atual do carrinho na página
-            const cartContainer = select('.cart');
-            cartContainer.innerHTML = '';
-
-            let subtotal = 0;
-
-            // Itera sobre os itens do carrinho e preenche a página
-            for (const cartItem of cartFromStorage) {
-                const eachTshirt = camisasFlamengoJson.find(tshirt => tshirt.id === cartItem.id);
-
-                const cartItemContainer = document.createElement('div');
-                cartItemContainer.classList.add('cart-item');
-
-                const tshirtImage = document.createElement('img');
-                tshirtImage.src = eachTshirt.img;
-                tshirtImage.alt = eachTshirt.model;
-                cartItemContainer.appendChild(tshirtImage);
-
-                const tshirtName = document.createElement('div');
-                tshirtName.textContent = `${eachTshirt.model} (${cartItem.size})`;
-                cartItemContainer.appendChild(tshirtName);
-
-                const tshirtQuantity = document.createElement('div');
-                tshirtQuantity.textContent = `Quantidade: ${cartItem.qt}`;
-                cartItemContainer.appendChild(tshirtQuantity);
-
-                const removeButton = document.createElement('button');
-                removeButton.textContent = 'Remover';
-                removeButton.addEventListener('click', () => {
-                    // Remova o item do carrinho e atualize o Local Storage
-                    cartFromStorage.splice(cartFromStorage.indexOf(cartItem), 1);
-                    localStorage.setItem('cart', JSON.stringify(cartFromStorage));
-                    // Atualize a exibição do carrinho
-                    updateCart();
-                });
-                cartItemContainer.appendChild(removeButton);
-
-                cartContainer.appendChild(cartItemContainer);
-
-                subtotal += cartItem.price * cartItem.qt;
-            }
-
-
-            // Atualiza o subtotal na página
-            select('.subtotal-value').textContent = subtotal;
-            // Calcula o total (se necessário) e atualiza na página
-            const total = subtotal; // Aqui você pode adicionar taxas ou descontos, se necessário
-            select('.total-value').textContent = total;
-        } else {
-            // Carrinho vazio
-            // ...
-        }
-    } else {
-        // Redireciona de volta para a página de seleção de camisas
-        setTimeout(function () {
-            window.location.href = "./flamengo.html";
-        });
-    }
-
-    if (typeof callback === 'function') {
-        callback()
-    }
-};
-
+const endBuy = () => {
+    select('.cart--finalizar').addEventListener('click', () => {
+        console.log('Finalizar compra')
+        select('aside').classList.remove('show')
+        select('aside').style.left = '100vw'
+    })
+}
 
 
 let blusas = select('#blusas')
 blusas.innerHTML = ''
 
-// fetch('http://localhost:3000/camisas/flamengo')
-// .then(response => responde.json())
-// .then(data => {
-
-
-
 camisasFlamengoJson.map((tshirt, index) => {
     console.log(index);
-
+    
     let eachTshirt = `<div class="each-tshirt col-md-6 col-sm-6" data-key="${index}">
     <div
       class="card-tshirts row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -249,63 +242,31 @@ camisasFlamengoJson.map((tshirt, index) => {
       </div>
     </div>
   </div>`
-
+    
     blusas.innerHTML += eachTshirt
-
-
+    
+    
     blusas.querySelectorAll('.each-tshirt a').forEach((button, index) => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('Clicou na camisa');
-
+    
             let specificKey = getKey(e);
-
+    
             openWindow();
-
+            
             windowsInfo(camisasFlamengoJson[index]);
             readSizes(specificKey);
             chooseSize(specificKey);
         });
     });
-
+    
     closeButtons()
 })
 
-// })
-
 
 changeQtd()
-
-const renderizarCarrinhoNaPaginaCarrinho = (cartItens) => {
-    const cartContainer = document.getElementById('cart-container');
-    cartContainer.innerHTML = '';
-
-    cartItens.forEach((cartItem) => {
-        const eachTshirt = camisasFlamengoJson.find(tshirt => tshirt.id === cartItem.id);
-
-        const cartItemContainer = document.createElement('div');
-        cartItemContainer.classList.add('cart-item');
-
-        // Crie os elementos HTML para exibir as informações da camisa no carrinho, semelhante ao exemplo anterior.
-
-        cartContainer.appendChild(cartItemContainer);
-    });
-}
-
-const exibirCarrinhoNaPaginaCarrinho = () => {
-    const cartFromStorage = JSON.parse(localStorage.getItem('cart'));
-    if (cartFromStorage && cartFromStorage.length > 0) {
-        renderizarCarrinhoNaPaginaCarrinho(cartFromStorage);
-
-        // Outras atualizações necessárias na página, como exibir subtotal e total.
-    } else {
-        // Carrinho vazio, exibir uma mensagem ou tratamento apropriado.
-    }
-};
-
-// changeQtd()
-
-
 addToCart()
-
-exibirCarrinhoNaPaginaCarrinho()
+updateCart()
+closeCart()
+endBuy()
