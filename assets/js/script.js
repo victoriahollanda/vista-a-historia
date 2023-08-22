@@ -96,7 +96,8 @@ const addToCart = () => {
         let price = select('.tshirtInfo--actualPrice').innerHTML.replace('R$ ', '')
 
         let identificator = camisasFlamengoJson[windowKey].id + 't' + size
-        let key = cart.findIndex( (tshirt) => tshirt.identificator == identificator)
+    
+        let key = cart.findIndex((tshirt) => tshirt.identificator == identificator)
         console.log(key)
 
         if (key > -1) {
@@ -106,9 +107,11 @@ const addToCart = () => {
             let tshirtInCart = {
                 identificator,
                 id: camisasFlamengoJson[windowKey].id,
-                size,
+                size: 'Tam: ' + size,
                 qt: qtdTshirts,
-                price: parseFloat(price)
+                price: parseFloat(price),
+                model: camisasFlamengoJson[windowKey].model + ' (' + camisasFlamengoJson[windowKey].cup + ')',
+                img: camisasFlamengoJson[windowKey].img,
             }
             cart.push(tshirtInCart)
             console.log(tshirtInCart)
@@ -118,6 +121,7 @@ const addToCart = () => {
         closeWindow()
         openCart()
         updateCart()
+        gerarCarrinho()
     })
 }
 
@@ -129,7 +133,7 @@ const openCart = () => {
 
     //mobile:
     select('.menu-openner').addEventListener('click', () => {
-        if(cart.length > 0) {
+        if (cart.length > 0) {
             select('aside').classList.add('show')
             select('aside').style.left = '0'
         }
@@ -148,6 +152,9 @@ const updateCart = () => {
         select('aside').classList.add('show')
         select('.cart').innerHTML = ''
 
+        gerarCarrinho()
+
+
         let subtotal = 0
         let total = 0
 
@@ -156,10 +163,9 @@ const updateCart = () => {
             console.log(eachTshirt)
 
             subtotal += cart[i].price * cart[i].qt
-            
+
             //SUBSTITUIR POR MAP 
-            let cartItem = select('.cart--item').cloneNode(true)
-            select('.cart').append(cartItem)
+           
 
 
             let tshirtSize = cart[i].size
@@ -182,7 +188,7 @@ const updateCart = () => {
                 } else {
                     cart.splice(i, 1)
                 }
-                
+
                 (cart.length < 1) ? seleciona('header').style.display = 'flex' : ''
 
                 updateCart()
@@ -191,14 +197,14 @@ const updateCart = () => {
             select('.cart').append(cartItem)
 
         }
-        
-        total=subtotal
+
+        total = subtotal
 
         select('.subtotal').innerHTML = subtotal
         select('.total').innerHTML = total
     } else {
         select('aside').classList.remove('show')
-		select('aside').style.left = '100vw'
+        select('aside').style.left = '100vw'
 
     }
 }
@@ -215,58 +221,87 @@ const endBuy = () => {
 let blusas = select('#blusas')
 blusas.innerHTML = ''
 
+//EXCLUIR ATÉ AQUI
+
+// fetch('http://localhost:3000/camisas/flamengo')
+// .then(response => response.json())
+// .then(data => {
+
+
 camisasFlamengoJson.map((tshirt, index) => {
     console.log(index);
-    
+
     let eachTshirt = `<div class="each-tshirt col-md-6 col-sm-6" data-key="${index}">
-    <div
-      class="card-tshirts row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-      <div class="tshirt-item--img col-auto d-none d-lg-block">
-        <img class="bd-placeholder-img" width="200" height="250" src="${tshirt.img}" role="img"
-          aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <title>Placeholder</title>
-        <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
-          dy=".3em"></text>
-      </div>
-      <div class="col p-4 d-flex flex-column position-static">
-        <h4 class="tshirt-item--name mb-0">${tshirt.model}</h4>
-        <div class="tshirt-item--cup mb-1 text-body-secondary">${tshirt.cup}</div>
-        <p class="tshirt-item--description card-text mb-auto">${tshirt.description}</p>
-        <strong class="tshirt-item--mkt text-decoration-line-through">${'R$ ' + tshirt.mktPrice}</strong>
-        <strong class="tshirt-item--price d-inline-block mb-4 text-dark-emphasis">${'R$ ' + tshirt.price}</strong>
-        <div class="tshirt-item--link">
-          <a href="#" class=" icon-link gap-1 icon-link-hover stretched-link">
-            <button type="button" class="btn btn-sm btn-dark"> Compre aqui</button>
-          </a>
+        <div
+        class="card-tshirts row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="tshirt-item--img col-auto d-none d-lg-block">
+            <img class="bd-placeholder-img" width="200" height="250" src="${tshirt.img}" role="img"
+            aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
+            dy=".3em"></text>
         </div>
-      </div>
-    </div>
-  </div>`
-    
+        <div class="col p-4 d-flex flex-column position-static">
+            <h4 class="tshirt-item--name mb-0">${tshirt.model}</h4>
+            <div class="tshirt-item--cup mb-1 text-body-secondary">${tshirt.cup}</div>
+            <p class="tshirt-item--description card-text mb-auto">${tshirt.description}</p>
+            <strong class="tshirt-item--mkt text-decoration-line-through">${'R$ ' + tshirt.mktPrice}</strong>
+            <strong class="tshirt-item--price d-inline-block mb-4 text-dark-emphasis">${'R$ ' + tshirt.price}</strong>
+            <div class="tshirt-item--link">
+            <a href="#" class=" icon-link gap-1 icon-link-hover stretched-link">
+                <button type="button" class="btn btn-sm btn-dark"> Compre aqui</button>
+            </a>
+            </div>
+        </div>
+        </div>
+    </div>`
+
     blusas.innerHTML += eachTshirt
-    
-    
+
+
     blusas.querySelectorAll('.each-tshirt a').forEach((button, index) => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('Clicou na camisa');
-    
+
             let specificKey = getKey(e);
-    
+
             openWindow();
-            
+
             windowsInfo(camisasFlamengoJson[index]);
             readSizes(specificKey);
             chooseSize(specificKey);
         });
     });
-    
+
     closeButtons()
 })
 
+// })
+
+function gerarCarrinho() {
+    let localCart = select('#local--cart')
+        localCart.innerHTML = ''
+        cart.map(tshirt => {
+            console.log(tshirt);
+            let cartItem = ` <div class="cart--item">
+            <img src="${tshirt.img}" />
+            <div class="cart--item-nome">${tshirt.model} ${tshirt.size}</div>
+            
+            <div class="cart--item--qtarea">
+              <button class="cart--item-qtmenos">-</button>
+              <div class="cart--item--qt">${tshirt.qt}</div>
+              <button class="cart--item-qtmais">+</button>
+            </div>
+          </div>`
+            localCart.innerHTML += cartItem
+        })
+            
+}
 
 changeQtd()
 addToCart()
 updateCart()
 closeCart()
 endBuy()
+
