@@ -124,14 +124,6 @@ const openCart = () => {
         select('aside').classList.add('show')
         select('aside').style.left = '0'
     }
-
-    // //mobile:
-    // select('.menu-openner').addEventListener('click', () => {
-    //     if (cart.length > 0) {
-    //         select('aside').classList.add('show')
-    //         select('aside').style.left = '0'
-    //     }
-    // })
 }
 
 const closeCart = () => {
@@ -146,7 +138,6 @@ const updateCart = () => {
         cartContainer.innerHTML = ''
 
         let subtotal = 0
-        let total = 0
 
         for (let i = 0; i < cart.length; i++) {
             const eachTshirt = camisasFlamengoJson.find((tshirt) => tshirt.id == cart[i].id)
@@ -205,10 +196,8 @@ const updateCart = () => {
             cartContainer.appendChild(cartItem);
         }
 
-        total = subtotal; //tentar só =
-
-        // select('#subtotal').innerHTML = subtotal
-        select('#totalSpace').innerHTML = total
+        subtotal = 'R$ ' + subtotal
+        select('#totalSpace').innerHTML = subtotal
 
         select('aside').classList.add('show');
         select('aside').style.left = '0';
@@ -301,16 +290,6 @@ function gerarCarrinho() {
         localCart.innerHTML += cartItem
     })
 
-    // let localTotal = select('#cart--details')
-    // localTotal.innerHTML = ''
-    // cart.map(tshirt => {
-    //     let totalCart = `        <div class="cart--totalitem total big">
-    //     <span>Total</span>
-    //     <span>R$ ${tshirt.subtotal}</span>
-    //   </div>
-    //   <div class="cart--finalizar">Finalizar a compra</div>`
-    //   localTotal.innerHTML = totalCart
-    // })
     updateCart()
 }
 
@@ -319,5 +298,3 @@ addToCart()
 updateCart()
 closeCart()
 endBuy()
-
-//CTRL Z ATÉ AQUI
