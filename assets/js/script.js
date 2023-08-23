@@ -125,13 +125,13 @@ const openCart = () => {
         select('aside').style.left = '0'
     }
 
-    //mobile:
-    select('.menu-openner').addEventListener('click', () => {
-        if (cart.length > 0) {
-            select('aside').classList.add('show')
-            select('aside').style.left = '0'
-        }
-    })
+    // //mobile:
+    // select('.menu-openner').addEventListener('click', () => {
+    //     if (cart.length > 0) {
+    //         select('aside').classList.add('show')
+    //         select('aside').style.left = '0'
+    //     }
+    // })
 }
 
 const closeCart = () => {
@@ -151,8 +151,8 @@ const updateCart = () => {
         for (let i = 0; i < cart.length; i++) {
             const eachTshirt = camisasFlamengoJson.find((tshirt) => tshirt.id == cart[i].id)
 
-            subtotal += cart[i].price * cart[i].qt //tentar trocar por subtotal += cart[i].subtotal 
-
+            subtotal += cart[i].subtotal //tentar trocar por subtotal += cart[i].subtotal 
+            console.log(cart[i].subtotal);
             const tshirtName = `${cart[i].model} ${cart[i].size}`
 
 
@@ -178,10 +178,10 @@ const updateCart = () => {
                 if (cart[i].qt > 1) {
                     cart[i].qt--;
                     cart[i].subtotal = cart[i].qt * parseFloat(eachTshirt.price);
-                    updateCart(); // Update the cart after modifying quantity
+                    updateCart();
                 } else {
                     cart.splice(i, 1);
-                    updateCart(); // Update the cart after removing an item
+                    updateCart();
                 }
             });
             qtAreaElement.appendChild(qtMenosButton);
@@ -197,7 +197,7 @@ const updateCart = () => {
             qtMaisButton.addEventListener('click', () => {
                 cart[i].qt++;
                 cart[i].subtotal = cart[i].qt * parseFloat(eachTshirt.price);
-                updateCart(); // Update the cart after modifying quantity
+                updateCart();
             });
             qtAreaElement.appendChild(qtMaisButton);
 
@@ -205,10 +205,10 @@ const updateCart = () => {
             cartContainer.appendChild(cartItem);
         }
 
-        total += subtotal; //tentar só =
+        total = subtotal; //tentar só =
 
-        select('.subtotal').innerHTML = subtotal.toFixed(2); // Assuming two decimal places for display
-        select('#totalSpace').innerHTML = total.toFixed(2); // Assuming two decimal places for display
+        // select('#subtotal').innerHTML = subtotal
+        select('#totalSpace').innerHTML = total
 
         select('aside').classList.add('show');
         select('aside').style.left = '0';
@@ -311,7 +311,7 @@ function gerarCarrinho() {
     //   <div class="cart--finalizar">Finalizar a compra</div>`
     //   localTotal.innerHTML = totalCart
     // })
-    
+    updateCart()
 }
 
 changeQtd()
